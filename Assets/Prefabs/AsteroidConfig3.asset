@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AsteroidConfig3
   m_EditorClassIdentifier: 
   speed: 2
-  power: 4
+  power: 5

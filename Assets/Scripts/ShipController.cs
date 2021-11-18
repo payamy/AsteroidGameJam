@@ -7,6 +7,9 @@ public class ShipController : MonoBehaviour
     public float speed;
     public int heart;
 
+    public int bulletCount;
+    public GameObject bullet;
+
     public EventSystemManager eventSystem;
 
     private ScreenBoundaryManager boundaryManager;
@@ -15,6 +18,9 @@ public class ShipController : MonoBehaviour
     void Start()
     {
         boundaryManager = new ScreenBoundaryManager();
+
+        eventSystem.OnAsteroidCollisionEnter.Invoke();
+        eventSystem.OnTriggerFireEnter.Invoke();
     }
 
     // Update is called once per frame
@@ -37,8 +43,20 @@ public class ShipController : MonoBehaviour
             transform.position += new Vector3(1, 0, 0) * speed;
         }
 
-        // keep the spaceshipe in screen bounds
+        // keep the spaceship in screen bounds
         boundaryManager.keepInBoundaries(this.gameObject);
+
+        // check if spaceship still have bullets
+        if (bulletCount <= 0)
+        {
+            bulletCount = 0;
+            bullet = null;
+        }
+
+        if (speed > 0.1)
+        {
+            speed -= 0.00015f;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -61,6 +79,23 @@ public class ShipController : MonoBehaviour
 
             // update heart count on Ui
             eventSystem.OnAsteroidCollisionEnter.Invoke();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.gameObject.tag == "Combo")
+        {
+            ComboInstanceController comboController = collision.gameObject.GetComponent<ComboInstanceController>();
+            comboController.OnConsume();
+
+            Destroy(collision.gameObject);
+
+            if (comboController.GetType().Name == "ComboBulletController")
+            {
+                eventSystem.OnTriggerFireEnter.Invoke();
+            }
         }
     }
 }

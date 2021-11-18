@@ -7,10 +7,12 @@ public class EventSystemManager : MonoBehaviour
 {
     public UnityEvent OnAsteroidCollisionEnter;
     public UnityEvent OnShipVanishedEnter;
+    public UnityEvent OnTriggerFireEnter;
 
     private void Awake()
     {
         OnAsteroidCollisionEnter = new UnityEvent();
         OnShipVanishedEnter = new UnityEvent();
+        OnTriggerFireEnter = new UnityEvent();
     }
 }

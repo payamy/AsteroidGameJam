@@ -6,10 +6,12 @@ public class AsteroidManager : MonoBehaviour
 {
     public AsteroidConfig config;
 
+    public int stamina;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        stamina = config.power;
     }
 
     // Update is called once per frame
